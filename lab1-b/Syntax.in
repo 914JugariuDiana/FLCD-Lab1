@@ -1,0 +1,51 @@
+Syntax:
+
+The words - predefined tokens are specified between " and ":
+
+Sintactical rules: (file Syntax.in)
+
+main ::= function | program
+
+function ::= "defined" type "func" name "(" type|arrayType IDENTIFIER ")" "{"
+	program "}"
+
+type1 ::= "boolean" | "char" | "integer" | "string" | "float"
+
+program ::= decllist ";" cmpdstmt ";"
+
+decllist ::= arraydecl | declaration ";" decllist
+
+declaration ::= type IDENTIFIER "," IDENTIFIER ";"
+
+arraydecl ::= type1 IDENTIFIER "[" nr "]" ";"
+
+type  ::= type1|arraydecl
+
+cmpdstmt ::= stmtlist
+
+stmtlist ::= stmt | stmt ";" stmtlist
+
+stmt ::= simplestmt | structstmt
+
+simplestmt ::= assignstmt | iostmt
+
+assignstmt ::= IDENTIFIER "=" expression | constants
+
+expression ::= expression "+"| "-" | "*" | "/" | "mod"  factor | factor 
+
+factor ::= "(" expression ")" | IDENTIFIER | IDENTIFIER "++" | "--"
+
+iostmt ::= "READ" | "WRITE" | "PRINT" "(" IDENTIFIER ")"
+
+structstmt ::= cmpdstmt | ifstmt | whilestmt | forstmt
+
+ifstmt ::= "if" "(" condition ")" "{" stmt "}" "else" "{" stmt "}"
+
+whilestmt ::= "while" "(" condition ")" "{" stmt "}"
+
+forstmt ::= "for" "(" assignstmt ";" condition ";" factor ")" "{" stmt "}"
+
+condition ::= expression RELATION expression "and" | "or" condition
+
+RELATION ::= "<" | "<=" | "==" | "!=" | ">=" | ">"
+
