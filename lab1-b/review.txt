@@ -1,0 +1,3 @@
+Function does not have name, do we only have one function? If we have a function and main how do we call the function?
+At arraydecl there is nr which is not specified, maybe constant should be there.
+At forstmt, i think for is more complex, and should not have only a condition. A for has also assignment and expresion in it, if not than what is the difference between while and for.
