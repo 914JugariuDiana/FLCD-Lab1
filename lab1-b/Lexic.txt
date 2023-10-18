@@ -11,9 +11,9 @@ Lexic:
 
       a.Special symbols, representing:
 
-- operators + ++ - -- * / := < <= = == >=
+- operators + ++ - -- * ^ / != < <= = == >=
 
-- separators ( ) [ ] { } ; space
+- separators ( ) [ ] { } , ; space
 
 - reserved words:
 
@@ -50,3 +50,8 @@ Lexic:
       string:=char{string}
 
       char:=letter|digit
+
+//Lexic.txt seems mostly good and decently comprehensive, however a couple of issues I can see are as follows:
+//  - Under the operators section, you're missing the "^" operator you utilized in p1 to represent the exponentiation operation; additionally, you have the ":=" operator listed, which does not show up in your //  code; Finally, you're missing the "!=" inequality operator.
+//  - Under the separators section, you're missing the comma "," symbol, which you're using in your code for function argument enumeration.
+//  - The reserved words, identifiers and constant rules all seem to be perfectly in order.
