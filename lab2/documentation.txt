@@ -1,0 +1,6 @@
+Created a hash table with:
+- a table (a list with lists) and a given size, if multiple elements hash to the same osition there will be added to a list with elements that hash to the same position
+- a hash function that adds the ascii code of the characters and than does modulo on them
+- a add function, that adds the key to the table, returns the position of the element
+- a contains function, returns true if the value already is in the table, false otherwise
+- a getPos function, returns a pair containing the index of the position in the list and the index of the position in the second list
