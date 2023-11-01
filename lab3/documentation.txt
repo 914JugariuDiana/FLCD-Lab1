@@ -1,0 +1,15 @@
+Created a hash table with:
+- a table (a list with lists) and a given size, if multiple elements hash to the same osition there will be added to a list with elements that hash to the same position
+- a hash function that adds the ascii code of the characters and than does modulo on them
+- a add function, that adds the key to the table, returns the position of the element
+- a contains function, returns true if the value already is in the table, false otherwise
+- a getPos function, returns a pair containing the index of the position in the list and the index of the position in the second list
+
+Created a program internal form:
+-adds a token, position in symbol table pair to a list
+
+Created a scanner:
+-has a checkConstant function, compares a token to a regex to see if it matches a constant pattern, a number does not begin with 0, a number can start with +/-, a string is surrounded by ''/""
+-has a checkIdentifier function, compares a token to a regex to see if it has a correct format, it does not begin with a digit, only contains letters or digits
+-has a scan function that reads all lines from a file and identifies a token than sends it to a classify function
+-has a classifyToken function that adds a token in the pif, in a different format depending on if it is a reserved word/operator/separator or identifier/constant, or if it does not match any of those an error it's added to a string errors that will pe returned by the scan function

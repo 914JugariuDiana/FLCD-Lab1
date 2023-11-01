@@ -1,0 +1,11 @@
+defined integer func maxNumbers (integer a[]){
+    integer i = 0;
+    integer n = length(a);
+    integer currentMax = a[n - 1];
+
+    for (i = 0; i < n; i = i + 1){
+        currentMax = maximum(currentMax, a[i]);
+    }
+
+    return currentMax;
+}

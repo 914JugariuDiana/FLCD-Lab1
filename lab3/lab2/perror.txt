@@ -1,0 +1,11 @@
+defined func sumNumbers(integer a[]) {
+    integer i = 0;
+    integer n = length(a);
+    integer sum = 0;
+
+    for (i == 0; i < n; i = i + 1){
+        sum = sum + a[i];
+    }
+
+    return sum;
+}

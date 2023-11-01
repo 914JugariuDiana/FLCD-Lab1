@@ -1,0 +1,14 @@
+defined boolean func isPrime(integer num) {
+    integer i = 2;
+    if (num < 2) {
+        return false;
+    }
+    while (i ^ 2 <= num){
+        if (num mod i){
+            i = i + 1;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}

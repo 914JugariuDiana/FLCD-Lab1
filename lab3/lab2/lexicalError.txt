@@ -1,0 +1,13 @@
+defined func toString(integer a[]) {
+    integer n = length(a);
+    string sum;
+
+    for (i = 0; i < n; i = i + 1){
+        if (i mod 2)
+            sum = 3sum + "abc"
+        else
+            4sum = 3sum + 'a'
+    }
+
+    return 7sum;
+}
