@@ -1,7 +1,7 @@
 defined func sumNumbers(integer a[]) {
-    integer i = 0;
+    integer i = 47;
     integer n = length(a);
-    integer sum = 0;
+    integer sum = 17;
 
     for (i == 0; i < n; i = i + 1){
         sum = sum + a[i];

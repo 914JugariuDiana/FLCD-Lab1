@@ -1,0 +1,51 @@
+N(set of nonterminals) ::
+Σ(set of terminals) ::
+P(finite set of productions, rules P⊆(N∪Σ)∗ N(N∪Σ)∗ x (N∪Σ)∗) ::
+S (start symbol, ∈N) ::
+
+1. (α,β)∈P is a production denoted α→β
+2. N ∩ Σ = ∅
+
+Finite automata
+
+A finite automaton (FA) is a 5-tuple 
+M = (Q,Σ,δ,q0,F)
+where: 
+• Q - finite set of states (|Q|<∞)
+• Σ - finite alphabet (|Σ|<∞)
+• δ – transition function : δ:Q×Σ→P(Q)
+• q0 – initial state q0 ∊ Q
+• F⊆Q – set of final states
+
+Q∩Σ=∅
+2. δ:Q×Σ→P(Q) , ε∈Σ0 - relation δ(q,ε)=p NOT allowed 
+3. If |δ(q,a)|≤1 => deterministic finite automaton (DFA) 
+4. If |δ(q,a)|>1 (more than a state obtained as result) => 
+nondeterministic finite automaton (NFA)
+
+Finite automata 
+The contructor receives a filename from which it takes the :
+• Q - finite set of states (|Q|<∞)
+• Σ - finite alphabet (|Σ|<∞)
+• δ – transition function : δ:Q×Σ→P(Q)
+• q0 – initial state q0 ∊ Q
+• F⊆Q – set of final states
+
+- it has a isDfa function that checks if the finite automata is a dfa
+- has getters for all its elements
+- has a checkSequence that calls a recursive check that tries all posible routes until it find a good one, if such exists
+
+
+finiteSetOfStates ::= 'Q =' states
+states ::= state | {, state}
+state ::= letter
+letter ::= 'a'|'b'|...|'z'|'A'|'B'|...|'Z'
+finiteAlphabet ::= "sigma = " alphabet
+sign::= '-'|'+'
+digit ::= '0'|'1'|...|'9'
+alphabet ::= alphabetCharacter | {alphabetCharacter,}
+alphabetCharacter ::= letter | digit | sign
+transitions ::= transition | {transition \n}
+transition ::= "trans=" state, alphabet, state
+initialState ::= "qo=" state
+finalStates ::= state |{state,}

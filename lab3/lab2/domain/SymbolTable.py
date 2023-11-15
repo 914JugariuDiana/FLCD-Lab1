@@ -1,4 +1,4 @@
-from lab2.domain.HashTable import HashTable
+from domain.HashTable import HashTable
 
 
 class SymbolTable:

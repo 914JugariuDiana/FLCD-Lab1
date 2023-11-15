@@ -1,0 +1,8 @@
+Q = p, q, r
+sigma = a, b
+trans = p, a, q
+trans = q, a, q
+trans = q, b, r
+trans = p, b, r
+q0 = p
+F = r

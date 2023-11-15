@@ -1,11 +1,14 @@
 import re
 
-from lab2.domain.PIF import PIF
-from lab2.domain.SymbolTable import SymbolTable
+from domain.FiniteAutomata import FiniteAutomata
+from domain.PIF import PIF
+from domain.SymbolTable import SymbolTable
 
 
 class Scanner:
     def __init__(self):
+        self.faIdentifier = FiniteAutomata("identifierFA.in")
+        self.faIntegerConstant = FiniteAutomata("constantFA.in")
         self.pif = PIF()
         self.st = SymbolTable(50)
         self.separators = ['(', ')', ' ', '\n', '[', ']', ';', ',', '{', '}']
@@ -51,11 +54,17 @@ class Scanner:
             self.errors += "Lexical error: line " + str(pos + 1) + " -> " + str(token) + "\n"
 
     def checkConstant(self, token):
+        if self.faIntegerConstant.checkSequence(token):
+            return True
+
         constant_pattern = r'^(0|[+-]?[1-9][0-9]*)$|^\'.\'$|^\".*\"$'
         return (re.match(constant_pattern, token)) is not None
 
+    # def checkIdentifier(self, token):
+    #     return re.match(r'^[a-z]([a-zA-Z]|[0-9])*$', token) is not None
+
     def checkIdentifier(self, token):
-        return re.match(r'^[a-z]([a-zA-Z]|[0-9])*$', token) is not None
+        return self.faIdentifier.checkSequence(token)
 
     def writeToFile(self, content, filename):
         file = open(filename, "w")
