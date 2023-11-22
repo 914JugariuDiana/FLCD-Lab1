@@ -1,0 +1,9 @@
+N=S C
+sigma=a b
+P=S| ab
+P=S| aCSb
+P=c| ab
+P=c| S
+P=c| bSb
+P=CS| b
+S=S
