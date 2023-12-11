@@ -16,6 +16,7 @@ class UI:
         string += "4 -> print the start symbol\n"
         string += "5 -> first and follow\n"
         string += "6 -> parsing table\n"
+        string += "7 -> check sequence\n"
         string += "0 -> exit"
 
         return string
@@ -43,10 +44,18 @@ class UI:
                 print('\nFOLLOW')
                 self.parser.compute_follow()
                 self.parser.print_follow()
-            if option == 6:
+            elif option == 6:
                 self.parser = LL1Parser(self.rg)
                 self.parser.print_table()
+            elif option == 7:
+                print("Sequence to be checked: ")
+                sequence = input()
+                self.parser = LL1Parser(self.rg)
 
+                if self.parser.parseSequence(sequence) != 0:
+                    print("Accepted")
+                else:
+                    print("Not accepted")
             elif option in self.options.keys():
                 func_name = self.options[option]
                 func = getattr(self.rg, func_name)

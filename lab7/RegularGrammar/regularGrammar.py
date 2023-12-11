@@ -14,28 +14,6 @@ class RegularGrammar:
         for terminal in self.sigma:
             self.first[terminal] = terminal
 
-    def computeFirst(self):
-        for key in self.productions.keys():
-            if key not in self.first.keys():
-                self.first[key] = []
-            for elem in self.productions[key]:
-                if elem in self.sigma or elem == "e":
-                    self.first[key].append(elem)
-                elif elem[0] in self.sigma or elem == "e":
-                    self.first[key].append(elem[0])
-
-        changes = True
-        while changes:
-            changes = False
-            for key in self.productions.keys():
-                if len(self.first[key]) == 0:
-                    for elem in self.productions[key]:
-                        if elem[0] in self.N and len(self.first[elem[0]]) != 0:
-                            self.first[key] += self.first[elem[0]]
-                            changes = True
-                            if "e" in self.first[key]:
-                                self.first[key].remove("sigma")
-
     def getGrammarFromFile(self, filename):
         indice = 0
         file = open(filename, "r")
