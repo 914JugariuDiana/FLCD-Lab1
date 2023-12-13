@@ -31,13 +31,14 @@ class LL1Parser:
 
         grammar = self.grammar
         while True:
+            # currentFirst = dict(self.first)
             currentFirst = copy.deepcopy(self.first)
             for key in self.grammar.productions.keys():
                 for elem in grammar.productions[key]:
-                    if elem[0] in self.grammar.N and "epsilon" in self.first[elem[0]]:
+                    if elem[0] in self.grammar.N and len(self.first[elem[0]]) == 1 and "epsilon" in self.first[elem[0]]:
                         for char in elem:
-                            if 'epsilon' in self.first[char]:
-                                self.first[key] = list(set(self.first[key] + self.first[char]))
+                            if 'epsilon' in self.first[char] and len(self.first[char]) == 1:
+                                continue
                             else:
                                 if char in self.grammar.N and len(self.first[char]) != 0:
                                     self.first[key] = list(set(self.first[key] + self.first[char]))
@@ -45,7 +46,7 @@ class LL1Parser:
                                         self.first[key].remove("epsilon")
                                     break
                                 elif char in self.grammar.sigma:
-                                    self.first[key] = list(set(list(self.first[char]) + self.first[key]))
+                                    self.first[key] += self.first[char]
                                     break
                     elif elem[0] in self.grammar.N and len(self.first[elem[0]]) != 0:
                         self.first[key] = list(set(self.first[key] + self.first[elem[0]]))
@@ -57,120 +58,88 @@ class LL1Parser:
                 break
 
     def compute_follow(self):
-        self.follow[self.grammar.startSymbol].append("epsilon")
+        self.follow[self.grammar.startSymbol].append('$')
 
-        while True:
-            previousFollow = copy.deepcopy(self.follow)
-            for nonterminal in self.grammar.N:
-                for key in self.grammar.productions:
-                    for result in self.grammar.productions[key]:
-                        if nonterminal in result:
-                            for i in range(len(result)):
-                                firstForNextSymbol = []
-
-                                if result[i] == nonterminal:
-                                    if len(result) > i + 1:
-                                        firstForNextSymbol = self.first[result[i + 1]]
-                                    else:
-                                        self.follow[nonterminal] = list(set(self.follow[nonterminal] + previousFollow[key]))
-
-                                    if "epsilon" in firstForNextSymbol and len(result) > i + 1:
-                                        self.follow[nonterminal] = list(set(previousFollow[nonterminal] +
-                                                                            list(firstForNextSymbol)))
-                                    elif len(result) > i + 1:
-                                        self.follow[nonterminal] = list(set(previousFollow[nonterminal] +
-                                                                            list(firstForNextSymbol)))
-
-                                    if "epsilon" in firstForNextSymbol:
-                                        self.follow[nonterminal] = list(set(self.follow[nonterminal] + previousFollow[key]))
-
-
-            if previousFollow == self.follow:
-                break
+        changes = True
+        while changes:
+            changes = False
+            for a in self.grammar.N:
+                for production in self.grammar.productions[a]:
+                    for i, symbol in enumerate(production):
+                        copy_follow = copy.deepcopy(self.follow)
+                        if symbol in self.grammar.N:
+                            if i < len(production) - 1:
+                                next_symbol = production[i + 1]
+                                first_beta = copy.deepcopy(self.first[next_symbol])
+                                if 'epsilon' in first_beta:
+                                    first_beta.remove('epsilon')
+                                if 'epsilon' in self.first[next_symbol]:
+                                    first_beta.extend(self.follow[a])
+                                copy_follow[symbol].extend(first_beta)
+                                copy_follow[symbol] = list(set(copy_follow[symbol]))
+                                if self.follow[symbol] != copy_follow[symbol]:
+                                    changes = True
+                                    self.follow[symbol].extend(first_beta)
+                                    self.follow[symbol] = list(set(self.follow[symbol]))
+                            elif symbol != a:
+                                copy_follow[symbol].extend(self.follow[a])
+                                copy_follow[symbol] = list(set(copy_follow[symbol]))
+                                if self.follow[symbol] != copy_follow[symbol]:
+                                    changes = True
+                                    self.follow[symbol].extend(self.follow[a])
+                                    self.follow[symbol] = list(set(self.follow[symbol]))
 
     def parsing_table(self):
         self.computeFirst()
         self.compute_follow()
         for i in self.grammar.sigma:
             self.table[i] = [i, "POP", 0]
-        index = 0
+
         for element in self.first.keys():
             if element in self.grammar.N:
                 production = self.grammar.productions[element]
-                for prod in production:
-                    if "epsilon" in prod:
-                        index += 1
-                        for elem_follow in self.follow[element]:
-                            self.table[element].append(
-                                [elem_follow, 'epsilon', index])
-                    else:
-                        index += 1
-                        char = prod[0]
-                        if char in self.grammar.sigma:
-                            self.table[element].append(
-                                [char, prod, index])
-
-                        else:
-                            for elem in self.first[char]:
+                if "epsilon" in self.first[element]:
+                    for elem in self.first[element]:
+                        if elem == "epsilon":
+                            for elem_follow in self.follow[element]:
+                                # TODO: MODIFY ID
                                 self.table[element].append(
-                                    [elem, production[0], index])
-        # self.computeFirst()
-        # self.compute_follow()
-        # for i in self.grammar.sigma:
-        #     self.table[i] = [i, "POP", 0]
-        #
-        # self.table['$'] = ['$', 'accept', 0]
-        #
-        # for element in self.first.keys():
-        #     if element in self.grammar.N:
-        #         production = self.grammar.productions[element]
-        #         if "epsilon" in self.first[element]:
-        #             for elem in self.first[element]:
-        #                 if elem == "epsilon":
-        #                     for elem_follow in self.follow[element]:
-        #                         # TODO: MODIFY ID
-        #                         self.table[element].append(
-        #                             [elem_follow, 'epsilon', self.grammar.numberedProduction[production[0]] + 1])
-        #                 else:
-        #                     if "epsilon" in production:
-        #                         production.remove("epsilon")
-        #                     if len(self.grammar.productions[element]) > 1:
-        #                         self.table[element].append([production, "conflict"])
-        #                     else:
-        #                         self.table[element].append(
-        #                             [elem, production[0], self.grammar.numberedProduction[production[0]]])
-        #         else:
-        #             for elem in self.first[element]:
-        #                 self.table[element].append(
-        #                     [elem, production[0], self.grammar.numberedProduction[production[0]]])
+                                    [elem_follow, 'epsilon', self.grammar.numberedProduction[production[0]] + 1])
+                        else:
+                            if "epsilon" in production:
+                                production.remove("epsilon")
+                            if len(self.grammar.productions[element]) > 1:
+                                self.table[element].append([production, "conflict"])
+                            else:
+                                self.table[element].append(
+                                    [elem, production[0], self.grammar.numberedProduction[production[0]]])
+                else:
+                    for elem in self.first[element]:
+                        self.table[element].append(
+                            [elem, production[0], self.grammar.numberedProduction[production[0]]])
 
     def parseSequence(self, sequence):
+        self.computeFirst()
+        self.compute_follow()
         self.parsing_table()
 
-        inputStack = sequence
-        workingStack = ""
-        resultStack = ""
+        inputStack = []
+        workingStack = []
+        resultStack = []
 
+        for char in sequence:
+            inputStack.append(char)
 
-        workingStack += self.grammar.startSymbol
+        workingStack.append(self.grammar.startSymbol)
 
         while True:
-            terminals = []
-            for elem in self.table[workingStack[0]]:
-                terminals.append(elem[0])
             if len(inputStack) == 0 and len(workingStack) == 0:
-                return resultStack
+                return True
             elif inputStack[0] == workingStack[0]:
-                inputStack = inputStack[1:]
-                workingStack = workingStack[1:]
-            elif inputStack[0] in terminals:
-                for elem in self.table[workingStack[0]]:
-                    if inputStack[0] == elem[0]:
-                        workingStack = workingStack[1:]
-                        workingStack = elem[1] + workingStack
-                        resultStack += str(elem[2])
-            else:
-                return 0
+                inputStack.pop()
+                workingStack.pop()
+
+
 
 
     def print_table(self):
