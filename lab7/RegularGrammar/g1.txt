@@ -1,11 +1,11 @@
 N=S A B C D
 sigma=a + * ( )
-P=S|BA
-P=A|+BA
+P=S|B A
+P=A|+ B A
 P=A|epsilon
-P=B|DC
-P=C|*DC
+P=B|D C
+P=C|* D C
 P=C|epsilon
-P=D|(S)
+P=D|( S )
 P=D|a
 S=S

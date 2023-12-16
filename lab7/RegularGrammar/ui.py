@@ -4,7 +4,7 @@ from LL1Parser import LL1Parser
 class UI:
     def __init__(self, regularGrammar):
         self.rg = regularGrammar
-        self.options = {1: "getAllNonterminals", 2: "getAllTerminals",  3: "getAllProductions",
+        self.options = {1: "getAllNonterminals", 2: "getAllTerminals", 3: "getAllProductions",
                         4: "getStartSymbol"}
 
     def getMenu(self):
@@ -16,6 +16,7 @@ class UI:
         string += "4 -> print the start symbol\n"
         string += "5 -> first and follow\n"
         string += "6 -> parsing table\n"
+        string += "7 -> check sequence\n"
         string += "0 -> exit"
 
         return string
@@ -33,7 +34,8 @@ class UI:
             if option.isdigit():
                 option = int(option)
             else:
-                print("No such option! Try again")
+                print("Try an option")
+                continue
 
             if option == 5:
                 self.parser = LL1Parser(self.rg)
@@ -43,9 +45,20 @@ class UI:
                 print('\nFOLLOW')
                 self.parser.compute_follow()
                 self.parser.print_follow()
-            if option == 6:
+            elif option == 6:
                 self.parser = LL1Parser(self.rg)
-                self.parser.print_table()
+                res = self.parser.parsing_table()
+                if res is not None:
+                    print("conflicts: ", res)
+                else:
+                    # print(self.parser.table)
+                    self.parser.print_table()
+            elif option == 7:
+                print("Sequence to be checked: ")
+                sequence = input()
+                self.parser = LL1Parser(self.rg)
+                self.parser.parseSequence(sequence)
+                print(self.parser.ds)
 
             elif option in self.options.keys():
                 func_name = self.options[option]
@@ -55,3 +68,6 @@ class UI:
                 return
             else:
                 print("No such option! Try again")
+
+
+# defined integer func name ( integer IDENTIFIER ) { char IDENTIFIER ; }

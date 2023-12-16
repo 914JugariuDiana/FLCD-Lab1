@@ -14,28 +14,6 @@ class RegularGrammar:
         for terminal in self.sigma:
             self.first[terminal] = terminal
 
-    def computeFirst(self):
-        for key in self.productions.keys():
-            if key not in self.first.keys():
-                self.first[key] = []
-            for elem in self.productions[key]:
-                if elem in self.sigma or elem == "e":
-                    self.first[key].append(elem)
-                elif elem[0] in self.sigma or elem == "e":
-                    self.first[key].append(elem[0])
-
-        changes = True
-        while changes:
-            changes = False
-            for key in self.productions.keys():
-                if len(self.first[key]) == 0:
-                    for elem in self.productions[key]:
-                        if elem[0] in self.N and len(self.first[elem[0]]) != 0:
-                            self.first[key] += self.first[elem[0]]
-                            changes = True
-                            if "e" in self.first[key]:
-                                self.first[key].remove("sigma")
-
     def getGrammarFromFile(self, filename):
         indice = 0
         file = open(filename, "r")
@@ -55,11 +33,12 @@ class RegularGrammar:
             elif elements[0] == 'P':
                 indice += 1
                 prod = elements[1].split("|")
-                self.numberedProduction[prod[1]] = indice
+                values = prod[1].split(' ')
+                self.numberedProduction[tuple(values)] = indice
                 if prod[0] in self.productions.keys():
-                    self.productions[prod[0]].append(prod[1])
+                    self.productions[prod[0]].append(values)
                 else:
-                    self.productions[prod[0]] = [prod[1]]
+                    self.productions[prod[0]] = [values]
             elif elements[0] == 'S':
                 self.startSymbol = elements[1]
 
@@ -92,7 +71,7 @@ class RegularGrammar:
             stringBuilder = stringBuilder + key + ' -> '
             if type(self.productions[key]) == list:
                 for elem in self.productions[key]:
-                    stringBuilder = stringBuilder + elem + " |"
+                    stringBuilder = stringBuilder + ' '.join(elem) + " |"
             stringBuilder = stringBuilder[:-1]
             stringBuilder += '\n'
 
