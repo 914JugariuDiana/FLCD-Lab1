@@ -1,0 +1,1 @@
+defined integer func funcName ( integer id ) { char str ; id = 157 }

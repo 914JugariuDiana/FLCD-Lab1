@@ -1,7 +1,7 @@
 import unittest
 
-from LL1Parser import LL1Parser
-from regularGrammar import RegularGrammar
+from service.LL1Parser import LL1Parser
+from domain.regularGrammar import RegularGrammar
 
 
 class test_LL1Parser(unittest.TestCase):

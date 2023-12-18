@@ -1,0 +1,4 @@
+The parser is a LL(1).
+Firstly, we read from file the grammar, afterwords, the parser follows multiple steps.
+We construct the first and follow dictionaries. First dictionary shows for every non-terminal, what is the first symbol
+they go in. Follow computes the second element that follows the first elements, for each non-terminal

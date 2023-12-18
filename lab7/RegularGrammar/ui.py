@@ -1,4 +1,4 @@
-from LL1Parser import LL1Parser
+from service.LL1Parser import LL1Parser
 
 
 class UI:
@@ -58,7 +58,6 @@ class UI:
                 sequence = input()
                 self.parser = LL1Parser(self.rg)
                 self.parser.parseSequence(sequence)
-                print(self.parser.ds)
 
             elif option in self.options.keys():
                 func_name = self.options[option]
@@ -70,4 +69,4 @@ class UI:
                 print("No such option! Try again")
 
 
-# defined integer func name ( integer IDENTIFIER ) { char IDENTIFIER ; }
+# defined integer func IDENTIFIER ( integer IDENTIFIER ; ) { char IDENTIFIER ; }
