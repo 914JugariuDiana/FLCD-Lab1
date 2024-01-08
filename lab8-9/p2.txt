@@ -1,0 +1,13 @@
+integer a;
+integer b;
+
+READ(a);
+READ(b);
+integer reminder;
+reminder = 2;
+
+while (reminder != 0) {
+    reminder = a mod b ;
+    a = b ;
+    b = reminder ;
+}

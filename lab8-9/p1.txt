@@ -1,0 +1,13 @@
+integer i;
+integer num;
+READ(num);
+i = 2;
+
+while (i ^ 2 <= num){
+     if (num mod i != 0){
+       i = i + 1;
+    } else {
+	PRINT(false); }
+}
+ 
+PRINT(true);
