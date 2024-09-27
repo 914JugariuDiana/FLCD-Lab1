@@ -49,3 +49,9 @@ condition ::= expression RELATION expression "and" | "or" condition
 
 RELATION ::= "<" | "<=" | "==" | "!=" | ">=" | ">"
 
+
+// Syntax.in has a couple of oversights when compared to your language code, mostly with regards to recursive syntactic rules:
+//   - For the <function> syntax, the way the argument list is written implies that only a single argument can ever be passed to a function, whereas your code allows multiple arguments.
+//   - A similar issue can be seen at the <declaration> syntax, where you wanted to illustrate that you can declare one or multiple variables of the same type on the same line, but instead wrote it in such a way where it would be understood that you can only declare exactly two variables on any declaration line.
+//   - On the same line, you wrote the simple declaration as "type IDENTIFIER" instead of "type1 IDENTIFIER", and since <type> is defined as "type1|arraydecl", that could let the scanner interpret a line such as "integer arr[5] var" as a valid declaration, which it is not.
+//   - Everything else under this seems fine to me, except for the <expression> syntax, where you forgot to include "^" as a possible operator. Additionally, for the <ifstmt>, the else is implied to be mandatory due to the fact that you did not write two separate syntactic branches.

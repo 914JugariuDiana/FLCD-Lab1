@@ -54,6 +54,7 @@ z
 -
 *
 /
+^
 <
 >
 =
@@ -91,6 +92,7 @@ char
 boolean
 float
 defined
+func
 if
 else 
 READ
@@ -102,3 +104,5 @@ return
 and
 or
 mod
+
+// Token.in is almost perfect, the only tokens I see lacking are the "^" exponentiation operator and the "func" reserved word.
